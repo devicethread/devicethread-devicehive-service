@@ -4,7 +4,6 @@
   "license": "MIT",
   "description": "devicehive",
   "main": "app.ts",
-  "type": "module",
   "scripts": {
     "nodemon": "nodemon",
     "dev": "set NODE_ENV=development && ts-node-dev -r tsconfig-paths/register app.ts",
