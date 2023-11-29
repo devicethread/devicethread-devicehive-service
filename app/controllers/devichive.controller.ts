@@ -124,3 +124,6 @@ export class DeviceHive {
     return await this.authService.refreshToken(deviceHive, refreshToken)
   }
 }
+
+
+module.exports = DeviceHive;
