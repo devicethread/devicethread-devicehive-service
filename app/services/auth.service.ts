@@ -1,6 +1,6 @@
 const DeviceHive = require('devicehive')
 import { Creds } from '../entities'
-import { DEVICEHIVE_ROUTE } from '../utils'
+import Route from '../utils/Route'
 
 class AuthService {
   constructor() {}
@@ -10,9 +10,9 @@ class AuthService {
       const httpDeviceHive = new DeviceHive({
         login: creds.login,
         password: creds.password,
-        mainServiceURL: DEVICEHIVE_ROUTE + '/api/rest',
-        authServiceURL: DEVICEHIVE_ROUTE + '/auth/rest',
-        pluginServiceURL: DEVICEHIVE_ROUTE + '/api/rest',
+        mainServiceURL: Route.DEVICEHIVE_ROUTE + '/api/rest',
+        authServiceURL: Route.DEVICEHIVE_ROUTE + '/auth/rest',
+        pluginServiceURL: Route.DEVICEHIVE_ROUTE + '/api/rest',
       })
       await httpDeviceHive.connect()
       return httpDeviceHive

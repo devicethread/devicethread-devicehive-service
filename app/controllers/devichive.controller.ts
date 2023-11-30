@@ -4,6 +4,7 @@ import DeviceService from '../services/device.service'
 import DeviceTypeService from '../services/device.type.service'
 import NetworkService from '../services/network.service'
 import UserService from '../services/user.service'
+import Route from '../utils/Route'
 
 export class DeviceHive {
   private authService: AuthService
@@ -126,5 +127,9 @@ export class DeviceHive {
   async refresh(creds: Creds, refreshToken: string): Promise<any> {
     const deviceHive = await this.authService.getDeviceHive(creds)
     return await this.authService.refreshToken(deviceHive, refreshToken)
+  }
+
+  async setRoute(env: string) {
+    Route.setDeviceHiveRoute(env)
   }
 }
