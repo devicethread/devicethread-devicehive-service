@@ -1,8 +1,6 @@
-import { Service } from 'typedi'
 const DeviceHive = require('devicehive')
 
-@Service()
-export class UserService {
+class UserService {
   constructor() {}
 
   async getAll(deviceHive: any) {
@@ -38,3 +36,5 @@ export class UserService {
     await deviceHive.user.assignNetworkId(userId, networkId)
   }
 }
+
+export default UserService

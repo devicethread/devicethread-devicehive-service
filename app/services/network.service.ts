@@ -1,8 +1,6 @@
-import { Service } from 'typedi'
 const DeviceHive = require('devicehive')
 
-@Service()
-export class NetworkService {
+class NetworkService {
   constructor() {}
 
   async getAll(deviceHive: any) {
@@ -26,3 +24,5 @@ export class NetworkService {
     await deviceHive.network.delete(networkId)
   }
 }
+
+export default NetworkService

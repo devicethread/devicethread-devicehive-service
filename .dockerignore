@@ -1,5 +1,0 @@
-# Virtual Devices Ignore list for Docker
-node_modules
-.git
-.vs
-.gitignore

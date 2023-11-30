@@ -1,20 +1,24 @@
-import { Creds } from 'app/entities'
-import {
-  AuthService,
-  DeviceService,
-  DeviceTypeService,
-  NetworkService,
-  UserService,
-} from 'app/services'
+import { Creds } from '../entities'
+import AuthService from '../services/auth.service'
+import DeviceService from '../services/device.service'
+import DeviceTypeService from '../services/device.type.service'
+import NetworkService from '../services/network.service'
+import UserService from '../services/user.service'
 
 export class DeviceHive {
-  constructor(
-    private authService: AuthService,
-    private deviceTypeService: DeviceTypeService,
-    private deviceService: DeviceService,
-    private networkService: NetworkService,
-    private userService: UserService,
-  ) {}
+  private authService: AuthService
+  private deviceTypeService: DeviceTypeService
+  private deviceService: DeviceService
+  private networkService: NetworkService
+  private userService: UserService
+
+  constructor() {
+    this.authService = new AuthService()
+    this.deviceTypeService = new DeviceTypeService()
+    this.deviceService = new DeviceService()
+    this.networkService = new NetworkService()
+    this.userService = new UserService()
+  }
 
   //  GET ALL ENITITES
 
@@ -124,6 +128,3 @@ export class DeviceHive {
     return await this.authService.refreshToken(deviceHive, refreshToken)
   }
 }
-
-
-module.exports = DeviceHive;

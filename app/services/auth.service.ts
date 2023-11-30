@@ -1,11 +1,8 @@
-import { Creds } from 'app/entities'
-import { DEVICEHIVE_ROUTE } from 'app/utils'
-// import { DeviceHive } from 'devicehive'
 const DeviceHive = require('devicehive')
-import { Service } from 'typedi'
+import { Creds } from '../entities'
+import { DEVICEHIVE_ROUTE } from '../utils'
 
-@Service()
-export class AuthService {
+class AuthService {
   constructor() {}
 
   async getDeviceHive(creds: Creds) {
@@ -28,3 +25,5 @@ export class AuthService {
     const authData = await deviceHive.token.refresh(refreshToken)
   }
 }
+
+export default AuthService
