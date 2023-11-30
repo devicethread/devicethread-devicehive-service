@@ -25,4 +25,5 @@ export declare class DeviceHive {
     assignNetworkId(creds: Creds, userId: string, networkId: string): Promise<any>;
     assignDeviceType(creds: Creds, userId: string, deviceTypeId: string): Promise<any>;
     refresh(creds: Creds, refreshToken: string): Promise<any>;
+    setRoute(env: string): Promise<void>;
 }

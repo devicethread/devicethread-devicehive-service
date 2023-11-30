@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const DeviceHive = require('devicehive');
-const utils_1 = require("../utils");
+const Route_1 = require("../utils/Route");
 class AuthService {
     constructor() { }
     async getDeviceHive(creds) {
@@ -9,9 +9,9 @@ class AuthService {
             const httpDeviceHive = new DeviceHive({
                 login: creds.login,
                 password: creds.password,
-                mainServiceURL: utils_1.DEVICEHIVE_ROUTE + '/api/rest',
-                authServiceURL: utils_1.DEVICEHIVE_ROUTE + '/auth/rest',
-                pluginServiceURL: utils_1.DEVICEHIVE_ROUTE + '/api/rest',
+                mainServiceURL: Route_1.default.DEVICEHIVE_ROUTE + '/api/rest',
+                authServiceURL: Route_1.default.DEVICEHIVE_ROUTE + '/auth/rest',
+                pluginServiceURL: Route_1.default.DEVICEHIVE_ROUTE + '/api/rest',
             });
             await httpDeviceHive.connect();
             return httpDeviceHive;

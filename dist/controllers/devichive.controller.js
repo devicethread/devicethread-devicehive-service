@@ -6,6 +6,7 @@ const device_service_1 = require("../services/device.service");
 const device_type_service_1 = require("../services/device.type.service");
 const network_service_1 = require("../services/network.service");
 const user_service_1 = require("../services/user.service");
+const Route_1 = require("../utils/Route");
 class DeviceHive {
     constructor() {
         this.authService = new auth_service_1.default();
@@ -94,6 +95,9 @@ class DeviceHive {
     async refresh(creds, refreshToken) {
         const deviceHive = await this.authService.getDeviceHive(creds);
         return await this.authService.refreshToken(deviceHive, refreshToken);
+    }
+    async setRoute(env) {
+        Route_1.default.setDeviceHiveRoute(env);
     }
 }
 exports.DeviceHive = DeviceHive;
