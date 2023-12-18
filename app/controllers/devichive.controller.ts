@@ -64,6 +64,22 @@ export class DeviceHive {
     return await this.userService.get(deviceHive, userId)
   }
 
+  //   ADD ENITITY
+  async addUser(creds: Creds, data: any): Promise<any> {
+    const deviceHive = await this.authService.getDeviceHive(creds)
+    return await this.userService.add(deviceHive, data)
+  }
+
+  async addDeviceType(creds: Creds, data: any): Promise<any> {
+    const deviceHive = await this.authService.getDeviceHive(creds)
+    return await this.deviceTypeService.add(deviceHive, data)
+  }
+
+  async addNetwork(creds: Creds, data: any): Promise<any> {
+    const deviceHive = await this.authService.getDeviceHive(creds)
+    return await this.networkService.add(deviceHive, data)
+  }
+
   //   UPDATE ENTITY
 
   async updateDevice(creds: Creds, deviceId: string, data: any): Promise<any> {
