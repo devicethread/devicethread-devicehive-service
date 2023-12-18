@@ -14,6 +14,12 @@ class DeviceTypeService {
     return await deviceHive.deviceType.get(deviceTypeId)
   }
 
+  async add(deviceHive: any, deviceTypeData: any) {
+    const DeviceType = DeviceHive.deviceType.DeviceType
+    const deviceType = new DeviceType(deviceTypeData)
+    await deviceHive.deviceType.insert(deviceType)
+  }
+
   async update(deviceHive: any, deviceTypeId: string, deviceTypeData: any) {
     const DeviceType = DeviceHive.deviceType.DeviceType
     const deviceType = new DeviceType(deviceTypeData)

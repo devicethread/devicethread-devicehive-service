@@ -18,6 +18,12 @@ class UserService {
     return await deviceHive.user.get(userId)
   }
 
+  async add(deviceHive: any, userData: any) {
+    const User = DeviceHive.user.User
+    const user = new User(userData)
+    await deviceHive.user.insert(user)
+  }
+
   async update(deviceHive: any, userId: string, userData: any) {
     const User = DeviceHive.user.User
     const user = new User(userData)
