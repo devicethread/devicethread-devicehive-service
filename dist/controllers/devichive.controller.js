@@ -49,6 +49,19 @@ class DeviceHive {
         const deviceHive = await this.authService.getDeviceHive(creds);
         return await this.userService.get(deviceHive, userId);
     }
+    //   ADD ENITITY
+    async addUser(creds, data) {
+        const deviceHive = await this.authService.getDeviceHive(creds);
+        return await this.userService.add(deviceHive, data);
+    }
+    async addDeviceType(creds, data) {
+        const deviceHive = await this.authService.getDeviceHive(creds);
+        return await this.deviceTypeService.add(deviceHive, data);
+    }
+    async addNetwork(creds, data) {
+        const deviceHive = await this.authService.getDeviceHive(creds);
+        return await this.networkService.add(deviceHive, data);
+    }
     //   UPDATE ENTITY
     async updateDevice(creds, deviceId, data) {
         const deviceHive = await this.authService.getDeviceHive(creds);

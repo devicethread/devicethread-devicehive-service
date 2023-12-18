@@ -14,6 +14,9 @@ export declare class DeviceHive {
     getDeviceType(creds: Creds, deviceTypeId: string): Promise<any>;
     getNetwork(creds: Creds, networkId: string): Promise<any>;
     getUser(creds: Creds, userId: string): Promise<any>;
+    addUser(creds: Creds, data: any): Promise<any>;
+    addDeviceType(creds: Creds, data: any): Promise<any>;
+    addNetwork(creds: Creds, data: any): Promise<any>;
     updateDevice(creds: Creds, deviceId: string, data: any): Promise<any>;
     updateDeviceType(creds: Creds, deviceTypeId: string, data: any): Promise<any>;
     updateNetwork(creds: Creds, networkId: string, data: any): Promise<any>;
