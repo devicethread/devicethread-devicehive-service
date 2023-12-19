@@ -15,15 +15,15 @@ class NetworkService {
     async add(deviceHive, networkData) {
         const Network = DeviceHive.models.Network;
         const network = new Network(networkData);
-        await deviceHive.network.insert(network);
+        return await deviceHive.network.insert(network);
     }
     async update(deviceHive, networkId, networkData) {
         const Network = DeviceHive.models.Network;
         const network = new Network(networkData);
-        await deviceHive.network.update(networkId, network);
+        return await deviceHive.network.update(networkId, network);
     }
     async delete(deviceHive, networkId) {
-        await deviceHive.network.delete(networkId);
+        return await deviceHive.network.delete(networkId);
     }
 }
 exports.default = NetworkService;

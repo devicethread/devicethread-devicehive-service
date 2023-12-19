@@ -15,10 +15,10 @@ class DeviceService {
     async update(deviceHive, deviceId, data) {
         const Device = DeviceHive.models.Device;
         const device = new Device({ id: deviceId, ...data });
-        await deviceHive.device.add(device);
+        return await deviceHive.device.add(device);
     }
     async delete(deviceHive, deviceId) {
-        await deviceHive.device.delete(deviceId);
+        return await deviceHive.device.delete(deviceId);
     }
 }
 exports.default = DeviceService;
