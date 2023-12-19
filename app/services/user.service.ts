@@ -19,13 +19,13 @@ class UserService {
   }
 
   async add(deviceHive: any, userData: any) {
-    const User = DeviceHive.user.User
+    const User = DeviceHive.models.User
     const user = new User(userData)
     await deviceHive.user.insert(user)
   }
 
   async update(deviceHive: any, userId: string, userData: any) {
-    const User = DeviceHive.user.User
+    const User = DeviceHive.models.User
     const user = new User(userData)
     await deviceHive.user.update(userId, user)
   }
@@ -39,7 +39,7 @@ class UserService {
   }
 
   async assignNetworkId(deviceHive: any, userId: string, networkId: string) {
-    await deviceHive.user.assignNetworkId(userId, networkId)
+    await deviceHive.user.assignNetwork(userId, networkId)
   }
 }
 
