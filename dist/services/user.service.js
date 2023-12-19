@@ -18,12 +18,12 @@ class UserService {
         return await deviceHive.user.get(userId);
     }
     async add(deviceHive, userData) {
-        const User = DeviceHive.user.User;
+        const User = DeviceHive.models.User;
         const user = new User(userData);
         await deviceHive.user.insert(user);
     }
     async update(deviceHive, userId, userData) {
-        const User = DeviceHive.user.User;
+        const User = DeviceHive.models.User;
         const user = new User(userData);
         await deviceHive.user.update(userId, user);
     }
@@ -34,7 +34,7 @@ class UserService {
         await deviceHive.user.assignDeviceType(userId, deviceTypeId);
     }
     async assignNetworkId(deviceHive, userId, networkId) {
-        await deviceHive.user.assignNetworkId(userId, networkId);
+        await deviceHive.user.assignNetwork(userId, networkId);
     }
 }
 exports.default = UserService;

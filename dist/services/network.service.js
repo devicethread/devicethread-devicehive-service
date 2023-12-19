@@ -13,12 +13,12 @@ class NetworkService {
         return await deviceHive.network.get(networkId);
     }
     async add(deviceHive, networkData) {
-        const Network = DeviceHive.network.Network;
+        const Network = DeviceHive.models.Network;
         const network = new Network(networkData);
         await deviceHive.network.insert(network);
     }
     async update(deviceHive, networkId, networkData) {
-        const Network = DeviceHive.network.Network;
+        const Network = DeviceHive.models.Network;
         const network = new Network(networkData);
         await deviceHive.network.update(networkId, network);
     }
