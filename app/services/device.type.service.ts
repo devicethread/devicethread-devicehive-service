@@ -17,17 +17,17 @@ class DeviceTypeService {
   async add(deviceHive: any, deviceTypeData: any) {
     const DeviceType = DeviceHive.models.DeviceType
     const deviceType = new DeviceType(deviceTypeData)
-    await deviceHive.deviceType.insert(deviceType)
+    return await deviceHive.deviceType.insert(deviceType)
   }
 
   async update(deviceHive: any, deviceTypeId: string, deviceTypeData: any) {
     const DeviceType = DeviceHive.models.DeviceType
     const deviceType = new DeviceType(deviceTypeData)
-    await deviceHive.deviceType.update(deviceTypeId, deviceType)
+    return await deviceHive.deviceType.update(deviceTypeId, deviceType)
   }
 
   async delete(deviceHive: any, deviceTypeId: string) {
-    await deviceHive.deviceType.delete(deviceTypeId)
+    return await deviceHive.deviceType.delete(deviceTypeId)
   }
 }
 

@@ -17,17 +17,17 @@ class NetworkService {
   async add(deviceHive: any, networkData: any) {
     const Network = DeviceHive.models.Network
     const network = new Network(networkData)
-    await deviceHive.network.insert(network)
+    return await deviceHive.network.insert(network)
   }
 
   async update(deviceHive: any, networkId: string, networkData: any) {
     const Network = DeviceHive.models.Network
     const network = new Network(networkData)
-    await deviceHive.network.update(networkId, network)
+    return await deviceHive.network.update(networkId, network)
   }
 
   async delete(deviceHive: any, networkId: string) {
-    await deviceHive.network.delete(networkId)
+    return await deviceHive.network.delete(networkId)
   }
 }
 
