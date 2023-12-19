@@ -6,7 +6,7 @@ class DeviceTypeService {
   async getAll(deviceHive: any) {
     const DeviceTypeListQuery = DeviceHive.models.query.DeviceTypeListQuery
     const deviceTypeListQuery = new DeviceTypeListQuery()
-    const deviceTypeList = await deviceHive.network.list(deviceTypeListQuery)
+    const deviceTypeList = await deviceHive.deviceType.list(deviceTypeListQuery)
     return deviceTypeList
   }
 
