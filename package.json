@@ -1,6 +1,6 @@
 {
   "name": "devicehive",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "Devicehive service for Devicethread",
   "main": "dist/index.js",
