@@ -11,7 +11,7 @@ class Route {
             case 'sandbox':
                 return 'https://hub-sandbox.devicethread.com';
             case 'qa':
-                return 'https://hub-qa.dthreaddev.com';
+                return 'http://147.182.200.207:8080';
             case 'beta':
                 return 'https://hub-beta.devicethread.com';
             default:
