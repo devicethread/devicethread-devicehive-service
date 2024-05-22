@@ -23,7 +23,9 @@ class DeviceTypeService {
         return await deviceHive.deviceType.update(deviceTypeId, deviceType);
     }
     async delete(deviceHive, deviceTypeId) {
-        return await deviceHive.deviceType.delete(deviceTypeId);
+        const DeviceTypeDeleteQuery = DeviceHive.models.query.DeviceTypeDeleteQuery;
+        const deviceTypeDeleteQuery = new DeviceTypeDeleteQuery({ deviceTypeId });
+        return await deviceHive.deviceType.delete(deviceTypeDeleteQuery);
     }
 }
 exports.default = DeviceTypeService;
