@@ -27,7 +27,9 @@ class DeviceTypeService {
   }
 
   async delete(deviceHive: any, deviceTypeId: string) {
-    return await deviceHive.deviceType.delete(deviceTypeId)
+    const DeviceTypeDeleteQuery = DeviceHive.models.query.DeviceTypeDeleteQuery
+    const deviceTypeDeleteQuery = new DeviceTypeDeleteQuery({ deviceTypeId })
+    return await deviceHive.deviceType.delete(deviceTypeDeleteQuery)
   }
 }
 
