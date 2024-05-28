@@ -18,6 +18,8 @@ class Route {
                 return 'http://147.182.200.207:8080';
             case 'beta':
                 return 'https://hub-beta.devicethread.com';
+            case 'stage':
+                return 'http://139.59.25.57:8080';
             default:
                 return 'http://64.227.166.179:8080';
         }
