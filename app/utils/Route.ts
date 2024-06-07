@@ -15,6 +15,8 @@ class Route {
         return 'https://hub-sandbox-new.devicethread.com'
       case 'eut':
         return 'https://hub-eut.devicethread.com'
+      case 'pre':
+        return 'https://hub-pre.devicethread.com'
       case 'qa':
         return 'http://147.182.200.207:8080'
       case 'beta':
