@@ -21,6 +21,12 @@ class Route {
         return 'http://147.182.200.207:8080'
       case 'beta':
         return 'https://hub-beta.devicethread.com'
+      case 'releasestage':
+        return 'https://hub-releasestage.devicethread.com'
+      case 'releaseblue':
+        return 'https://hub-releaseblue.devicethread.com'
+      case 'releasegreen':
+        return 'https://hub-releasegreen.devicethread.com'
       case 'stage':
         return 'http://139.59.25.57:8080'
       default:
