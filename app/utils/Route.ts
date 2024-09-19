@@ -19,6 +19,8 @@ class Route {
         return 'https://hub-pre.devicethread.com'
       case 'qa':
         return 'http://147.182.200.207:8080'
+      case 'qa-ecs':
+        return 'http://dt-qa-dhproxy.devicethread.com'
       case 'beta':
         return 'https://hub-beta.devicethread.com'
       case 'releasestage':
