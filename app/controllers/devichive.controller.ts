@@ -105,7 +105,8 @@ export class DeviceHive {
     const key = `devicehive:${creds.login}:device:${deviceId}`
     const isCached = await this.cacheService.existsOnRedis({ key })
     const deviceHive = await this.authService.getDeviceHive(creds)
-    const device = await this.deviceService.update(deviceHive, deviceId, data)
+    await this.deviceService.update(deviceHive, deviceId, data)
+    const device = await this.deviceService.get(deviceHive, deviceId)
     if (isCached) {
       await this.cacheService.setDataOnRedis({ key, value: JSON.stringify(device) })
       const devicesKey = `devicehive:${creds.login}:devices`
