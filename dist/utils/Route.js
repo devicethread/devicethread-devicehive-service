@@ -1,8 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const cache_service_1 = require("../services/cache.service");
 class Route {
-    static setDeviceHiveRoute(env) {
-        this.DEVICEHIVE_ROUTE = this.getUrls(env);
+    static setDeviceHiveRoute(url) {
+        this.DEVICEHIVE_ROUTE = url;
+    }
+    static setRedisUrl(client) {
+        this.REDIS_URL = client;
+        cache_service_1.default.getInstance().connectRedis(client);
     }
     static getUrls(env) {
         switch (env) {
@@ -36,4 +41,5 @@ class Route {
     }
 }
 Route.DEVICEHIVE_ROUTE = 'http://64.227.166.179:8080';
+Route.REDIS_URL = 'http://64.227.166.179:6379';
 exports.default = Route;

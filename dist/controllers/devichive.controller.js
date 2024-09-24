@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeviceHive = void 0;
 const auth_service_1 = require("../services/auth.service");
+const cache_service_1 = require("../services/cache.service");
 const device_service_1 = require("../services/device.service");
 const device_type_service_1 = require("../services/device.type.service");
 const network_service_1 = require("../services/network.service");
@@ -14,11 +15,20 @@ class DeviceHive {
         this.deviceService = new device_service_1.default();
         this.networkService = new network_service_1.default();
         this.userService = new user_service_1.default();
+        this.cacheService = cache_service_1.default.getInstance();
     }
     //  GET ALL ENITITES
     async getDevices(creds) {
+        const key = `devicehive:${creds.login}:devices`;
+        const isCached = await this.cacheService.existsOnRedis({ key });
+        if (isCached) {
+            return JSON.parse(await this.cacheService.getDataOnRedis({ key }));
+        }
         const deviceHive = await this.authService.getDeviceHive(creds);
-        return await this.deviceService.getAll(deviceHive);
+        const devices = await this.deviceService.getAll(deviceHive);
+        if (devices)
+            await this.cacheService.setDataOnRedis({ key, value: JSON.stringify(devices) });
+        return devices;
     }
     async getDeviceTypes(creds) {
         const deviceHive = await this.authService.getDeviceHive(creds);
@@ -34,8 +44,16 @@ class DeviceHive {
     }
     //   GET SINGLE ENTITY
     async getDevice(creds, deviceId) {
+        const key = `devicehive:${creds.login}:device:${deviceId}`;
+        const isCached = await this.cacheService.existsOnRedis({ key });
+        if (isCached) {
+            return JSON.parse(await this.cacheService.getDataOnRedis({ key }));
+        }
         const deviceHive = await this.authService.getDeviceHive(creds);
-        return await this.deviceService.get(deviceHive, deviceId);
+        const device = await this.deviceService.get(deviceHive, deviceId);
+        if (device)
+            await this.cacheService.setDataOnRedis({ key, value: JSON.stringify(device) });
+        return device;
     }
     async getDeviceType(creds, deviceTypeId) {
         const deviceHive = await this.authService.getDeviceHive(creds);
@@ -64,8 +82,22 @@ class DeviceHive {
     }
     //   UPDATE ENTITY
     async updateDevice(creds, deviceId, data) {
+        const key = `devicehive:${creds.login}:device:${deviceId}`;
+        const isCached = await this.cacheService.existsOnRedis({ key });
         const deviceHive = await this.authService.getDeviceHive(creds);
-        return await this.deviceService.update(deviceHive, deviceId, data);
+        const device = await this.deviceService.update(deviceHive, deviceId, data);
+        if (isCached) {
+            await this.cacheService.setDataOnRedis({ key, value: JSON.stringify(device) });
+            const devicesKey = `devicehive:${creds.login}:devices`;
+            const devices = JSON.parse(await this.cacheService.getDataOnRedis({ key: devicesKey }));
+            let devicesToBeUpdate = devices.filter(d => d.id != deviceId);
+            devicesToBeUpdate.push(device);
+            await this.cacheService.setDataOnRedis({
+                devicesKey,
+                value: JSON.stringify(devicesToBeUpdate),
+            });
+        }
+        return device;
     }
     async updateDeviceType(creds, deviceTypeId, data) {
         const deviceHive = await this.authService.getDeviceHive(creds);
@@ -81,6 +113,19 @@ class DeviceHive {
     }
     //   DELETE ENTITY
     async deleteDevice(creds, deviceId) {
+        const key = `devicehive:${creds.login}:device:${deviceId}`;
+        const isCached = await this.cacheService.existsOnRedis({ key });
+        if (isCached) {
+            await this.cacheService.deleteDataOnRedis({ key });
+        }
+        const devicesKey = `devicehive:${creds.login}:devices`;
+        const devices = JSON.parse(await this.cacheService.getDataOnRedis({ key: devicesKey }));
+        let devicesToBeUpdate = devices.filter(d => d.id != deviceId);
+        if (devicesToBeUpdate.length > 0)
+            await this.cacheService.setDataOnRedis({
+                devicesKey,
+                value: JSON.stringify(devicesToBeUpdate),
+            });
         const deviceHive = await this.authService.getDeviceHive(creds);
         return await this.deviceService.delete(deviceHive, deviceId);
     }
@@ -111,6 +156,9 @@ class DeviceHive {
     }
     async setRoute(env) {
         Route_1.default.setDeviceHiveRoute(env);
+    }
+    async setRedis(env) {
+        Route_1.default.setRedisUrl(env);
     }
 }
 exports.DeviceHive = DeviceHive;
