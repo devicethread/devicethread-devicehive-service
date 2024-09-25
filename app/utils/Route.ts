@@ -1,8 +1,16 @@
+import CacheService from '../services/cache.service'
+
 class Route {
   static DEVICEHIVE_ROUTE = 'http://64.227.166.179:8080'
+  static REDIS_URL = 'http://64.227.166.179:6379'
 
-  static setDeviceHiveRoute(env: string) {
-    this.DEVICEHIVE_ROUTE = this.getUrls(env)
+  static setDeviceHiveRoute(url: string) {
+    this.DEVICEHIVE_ROUTE = url
+  }
+
+  static setRedisUrl(client: any) {
+    this.REDIS_URL = client
+    CacheService.getInstance().connectRedis(client)
   }
 
   static getUrls(env: string) {

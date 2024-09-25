@@ -10,9 +10,9 @@ class AuthService {
       const httpDeviceHive = new DeviceHive({
         login: creds.login,
         password: creds.password,
-        mainServiceURL: Route.DEVICEHIVE_ROUTE + '/api/rest',
-        authServiceURL: Route.DEVICEHIVE_ROUTE + '/auth/rest',
-        pluginServiceURL: Route.DEVICEHIVE_ROUTE + '/api/rest',
+        mainServiceURL: Route.DEVICEHIVE_ROUTE,
+        authServiceURL: Route.DEVICEHIVE_ROUTE,
+        pluginServiceURL: Route.DEVICEHIVE_ROUTE,
       })
       await httpDeviceHive.connect()
       return httpDeviceHive

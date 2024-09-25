@@ -5,6 +5,7 @@ export declare class DeviceHive {
     private deviceService;
     private networkService;
     private userService;
+    private cacheService;
     constructor();
     getDevices(creds: Creds): Promise<any>;
     getDeviceTypes(creds: Creds): Promise<any>;
@@ -29,4 +30,5 @@ export declare class DeviceHive {
     assignDeviceType(creds: Creds, userId: string, deviceTypeId: string): Promise<any>;
     refresh(creds: Creds, refreshToken: string): Promise<any>;
     setRoute(env: string): Promise<void>;
+    setRedis(env: string): Promise<void>;
 }

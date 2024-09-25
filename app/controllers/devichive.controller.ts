@@ -1,5 +1,6 @@
 import { Creds } from '../entities'
 import AuthService from '../services/auth.service'
+import CacheService from '../services/cache.service'
 import DeviceService from '../services/device.service'
 import DeviceTypeService from '../services/device.type.service'
 import NetworkService from '../services/network.service'
@@ -12,6 +13,7 @@ export class DeviceHive {
   private deviceService: DeviceService
   private networkService: NetworkService
   private userService: UserService
+  private cacheService: CacheService
 
   constructor() {
     this.authService = new AuthService()
@@ -19,13 +21,22 @@ export class DeviceHive {
     this.deviceService = new DeviceService()
     this.networkService = new NetworkService()
     this.userService = new UserService()
+    this.cacheService = CacheService.getInstance()
   }
 
   //  GET ALL ENITITES
 
   async getDevices(creds: Creds): Promise<any> {
+    const key = `devicehive:${creds.login}:devices`
+    const isCached = await this.cacheService.existsOnRedis({ key })
+    if (isCached) {
+      return JSON.parse(await this.cacheService.getDataOnRedis({ key }))
+    }
     const deviceHive = await this.authService.getDeviceHive(creds)
-    return await this.deviceService.getAll(deviceHive)
+    const devices = await this.deviceService.getAll(deviceHive)
+    if (devices)
+      await this.cacheService.setDataOnRedis({ key, value: JSON.stringify(devices) })
+    return devices
   }
 
   async getDeviceTypes(creds: Creds): Promise<any> {
@@ -45,8 +56,16 @@ export class DeviceHive {
 
   //   GET SINGLE ENTITY
   async getDevice(creds: Creds, deviceId: string): Promise<any> {
+    const key = `devicehive:${creds.login}:device:${deviceId}`
+    const isCached = await this.cacheService.existsOnRedis({ key })
+    if (isCached) {
+      return JSON.parse(await this.cacheService.getDataOnRedis({ key }))
+    }
     const deviceHive = await this.authService.getDeviceHive(creds)
-    return await this.deviceService.get(deviceHive, deviceId)
+    const device = await this.deviceService.get(deviceHive, deviceId)
+    if (device)
+      await this.cacheService.setDataOnRedis({ key, value: JSON.stringify(device) })
+    return device
   }
 
   async getDeviceType(creds: Creds, deviceTypeId: string): Promise<any> {
@@ -83,8 +102,23 @@ export class DeviceHive {
   //   UPDATE ENTITY
 
   async updateDevice(creds: Creds, deviceId: string, data: any): Promise<any> {
+    const key = `devicehive:${creds.login}:device:${deviceId}`
     const deviceHive = await this.authService.getDeviceHive(creds)
-    return await this.deviceService.update(deviceHive, deviceId, data)
+    await this.deviceService.update(deviceHive, deviceId, data)
+    const device = await this.deviceService.get(deviceHive, deviceId)
+    await this.cacheService.setDataOnRedis({ key, value: JSON.stringify(device) })
+    const devicesKey = `devicehive:${creds.login}:devices`
+    const devices = JSON.parse(
+      await this.cacheService.getDataOnRedis({ key: devicesKey }),
+    )
+    let devicesToBeUpdate = devices.filter(d => d.id != deviceId)
+    devicesToBeUpdate.push(device)
+    await this.cacheService.setDataOnRedis({
+      key: devicesKey,
+      value: JSON.stringify(devicesToBeUpdate),
+    })
+
+    return device
   }
 
   async updateDeviceType(creds: Creds, deviceTypeId: string, data: any): Promise<any> {
@@ -105,6 +139,21 @@ export class DeviceHive {
   //   DELETE ENTITY
 
   async deleteDevice(creds: Creds, deviceId: string): Promise<any> {
+    const key = `devicehive:${creds.login}:device:${deviceId}`
+    const isCached = await this.cacheService.existsOnRedis({ key })
+    if (isCached) {
+      await this.cacheService.deleteDataOnRedis({ key })
+    }
+    const devicesKey = `devicehive:${creds.login}:devices`
+    const devices = JSON.parse(
+      await this.cacheService.getDataOnRedis({ key: devicesKey }),
+    )
+    let devicesToBeUpdate = devices.filter(d => d.id != deviceId)
+    if (devicesToBeUpdate.length > 0)
+      await this.cacheService.setDataOnRedis({
+        key: devicesKey,
+        value: JSON.stringify(devicesToBeUpdate),
+      })
     const deviceHive = await this.authService.getDeviceHive(creds)
     return await this.deviceService.delete(deviceHive, deviceId)
   }
@@ -147,5 +196,9 @@ export class DeviceHive {
 
   async setRoute(env: string) {
     Route.setDeviceHiveRoute(env)
+  }
+
+  async setRedis(env: string) {
+    Route.setRedisUrl(env)
   }
 }
