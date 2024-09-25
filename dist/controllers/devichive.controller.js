@@ -83,21 +83,18 @@ class DeviceHive {
     //   UPDATE ENTITY
     async updateDevice(creds, deviceId, data) {
         const key = `devicehive:${creds.login}:device:${deviceId}`;
-        const isCached = await this.cacheService.existsOnRedis({ key });
         const deviceHive = await this.authService.getDeviceHive(creds);
         await this.deviceService.update(deviceHive, deviceId, data);
         const device = await this.deviceService.get(deviceHive, deviceId);
-        if (isCached) {
-            await this.cacheService.setDataOnRedis({ key, value: JSON.stringify(device) });
-            const devicesKey = `devicehive:${creds.login}:devices`;
-            const devices = JSON.parse(await this.cacheService.getDataOnRedis({ key: devicesKey }));
-            let devicesToBeUpdate = devices.filter(d => d.id != deviceId);
-            devicesToBeUpdate.push(device);
-            await this.cacheService.setDataOnRedis({
-                key: devicesKey,
-                value: JSON.stringify(devicesToBeUpdate),
-            });
-        }
+        await this.cacheService.setDataOnRedis({ key, value: JSON.stringify(device) });
+        const devicesKey = `devicehive:${creds.login}:devices`;
+        const devices = JSON.parse(await this.cacheService.getDataOnRedis({ key: devicesKey }));
+        let devicesToBeUpdate = devices.filter(d => d.id != deviceId);
+        devicesToBeUpdate.push(device);
+        await this.cacheService.setDataOnRedis({
+            key: devicesKey,
+            value: JSON.stringify(devicesToBeUpdate),
+        });
         return device;
     }
     async updateDeviceType(creds, deviceTypeId, data) {
