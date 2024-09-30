@@ -10,7 +10,7 @@ class AuthService {
                 login: creds.login,
                 password: creds.password,
                 mainServiceURL: Route_1.default.DEVICEHIVE_ROUTE,
-                authServiceURL: Route_1.default.DEVICEHIVE_ROUTE,
+                authServiceURL: Route_1.default.DEVICEHIVE_ROUTE.replace('/api/rest', '/auth/rest'),
                 pluginServiceURL: Route_1.default.DEVICEHIVE_ROUTE,
             });
             await httpDeviceHive.connect();
