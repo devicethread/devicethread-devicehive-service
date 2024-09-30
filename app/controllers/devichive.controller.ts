@@ -102,6 +102,7 @@ export class DeviceHive {
   //   UPDATE ENTITY
 
   async updateDevice(creds: Creds, deviceId: string, data: any): Promise<any> {
+    if (data == null || data == undefined) return
     const key = `devicehive:${creds.login}:device:${deviceId}`
     const deviceHive = await this.authService.getDeviceHive(creds)
     await this.deviceService.update(deviceHive, deviceId, data)
