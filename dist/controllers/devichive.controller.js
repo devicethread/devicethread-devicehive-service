@@ -82,6 +82,8 @@ class DeviceHive {
     }
     //   UPDATE ENTITY
     async updateDevice(creds, deviceId, data) {
+        if (data == null || data == undefined)
+            return;
         const key = `devicehive:${creds.login}:device:${deviceId}`;
         const deviceHive = await this.authService.getDeviceHive(creds);
         await this.deviceService.update(deviceHive, deviceId, data);
