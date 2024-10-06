@@ -112,12 +112,14 @@ export class DeviceHive {
     const devices = JSON.parse(
       await this.cacheService.getDataOnRedis({ key: devicesKey }),
     )
-    let devicesToBeUpdate = devices.filter(d => d.id != deviceId)
-    devicesToBeUpdate.push(device)
-    await this.cacheService.setDataOnRedis({
-      key: devicesKey,
-      value: JSON.stringify(devicesToBeUpdate),
-    })
+    if (devices) {
+      let devicesToBeUpdate = devices.filter(d => d.id != deviceId)
+      devicesToBeUpdate.push(device)
+      await this.cacheService.setDataOnRedis({
+        key: devicesKey,
+        value: JSON.stringify(devicesToBeUpdate),
+      })
+    }
 
     return device
   }

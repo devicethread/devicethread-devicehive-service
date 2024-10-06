@@ -91,12 +91,14 @@ class DeviceHive {
         await this.cacheService.setDataOnRedis({ key, value: JSON.stringify(device) });
         const devicesKey = `devicehive:${creds.login}:devices`;
         const devices = JSON.parse(await this.cacheService.getDataOnRedis({ key: devicesKey }));
-        let devicesToBeUpdate = devices.filter(d => d.id != deviceId);
-        devicesToBeUpdate.push(device);
-        await this.cacheService.setDataOnRedis({
-            key: devicesKey,
-            value: JSON.stringify(devicesToBeUpdate),
-        });
+        if (devices) {
+            let devicesToBeUpdate = devices.filter(d => d.id != deviceId);
+            devicesToBeUpdate.push(device);
+            await this.cacheService.setDataOnRedis({
+                key: devicesKey,
+                value: JSON.stringify(devicesToBeUpdate),
+            });
+        }
         return device;
     }
     async updateDeviceType(creds, deviceTypeId, data) {
