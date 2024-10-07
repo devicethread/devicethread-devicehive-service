@@ -151,12 +151,14 @@ export class DeviceHive {
     const devices = JSON.parse(
       await this.cacheService.getDataOnRedis({ key: devicesKey }),
     )
-    let devicesToBeUpdate = devices.filter(d => d.id != deviceId)
-    if (devicesToBeUpdate.length > 0)
-      await this.cacheService.setDataOnRedis({
-        key: devicesKey,
-        value: JSON.stringify(devicesToBeUpdate),
-      })
+    if (devices) {
+      let devicesToBeUpdate = devices.filter(d => d.id != deviceId)
+      if (devicesToBeUpdate.length > 0)
+        await this.cacheService.setDataOnRedis({
+          key: devicesKey,
+          value: JSON.stringify(devicesToBeUpdate),
+        })
+    }
     const deviceHive = await this.authService.getDeviceHive(creds)
     return await this.deviceService.delete(deviceHive, deviceId)
   }
